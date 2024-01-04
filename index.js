@@ -2,13 +2,15 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mysql = require("mysql2");
+
 const dotenv = require("dotenv");
 let SQL = require("sql-template-strings");
 dotenv.config();
 
+let t = "hey"
+
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
+  host: process.env.DB_HOST, user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
 });
@@ -18,8 +20,8 @@ connection.connect((err) => {
     console.log(err);
   } else {
     console.log("Connected to database");
-    const statusTable = 'CREATE TABLE IF NOT EXISTS status (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), color CHAR(9));'
-    const tasksTable = 'CREATE TABLE IF NOT EXISTS tasks (id INT AUTO_INCREMENT PRIMARY KEY, description VARCHAR(255), status_id INT,FOREIGN KEY (status_id) REFERENCES status(id));'
+  const statusTable = 'CREATE TABLE IF NOT EXISTS status (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), color CHAR(9));'
+  const tasksTable = 'CREATE TABLE IF NOT EXISTS tasks (id INT AUTO_INCREMENT PRIMARY KEY, description VARCHAR(255), status_id INT,FOREIGN KEY (status_id) REFERENCES status(id));'
     connection.query(
       statusTable,
       (err, results) => {
@@ -87,10 +89,9 @@ app.get("/status", (req, res) => {
         
           <div class="task-list" id="status${row.id}List"></div>
           <button class="addTask" hx-swap="afterend" hx-trigger="click" hx-get="/add-task?status_id=${row.id}">
-            New task
+            New Task
           </button>
-        </div>
-              `
+        </div>`
 
 
         });
